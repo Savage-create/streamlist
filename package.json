@@ -3,6 +3,8 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "author": "Timothy Savage",
+  "description": "INT499 Week 1 - StreamList React App built by Timothy Savage for the University of Arizona Global Campus",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
