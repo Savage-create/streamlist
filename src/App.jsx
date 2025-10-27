@@ -1,4 +1,4 @@
-﻿import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { storage } from "./services/storage";
 import SearchPage from "./pages/SearchPage";
