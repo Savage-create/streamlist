@@ -22,3 +22,14 @@ a:hover { text-decoration:underline; }
 
 .h1 { font-size:24px; margin:10px 0 6px; }
 .section { margin-top:16px; }
+
+.card-h { display:flex; gap:12px; }
+.poster { width:80px; height:120px; object-fit:cover; border-radius:8px; background:#222; }
+.providers { margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+.provider { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; border:1px solid #2a2a2a; background:#151515; }
+.provider img { border-radius:4px; }
+.warn { background:#3b0d0d; color:#ffb4b4; border:1px solid #5d1515; padding:10px 12px; border-radius:8px; margin:8px 0; cursor:pointer; }
+.stack { display:grid; gap:10px; }
+.qty { width:60px; padding:8px; border-radius:8px; border:1px solid #232323; background:#1a1a1a; color:#fff; text-align:center; }
+.btn2 { padding:8px 12px; border:1px solid #2a2a2a; background:#151515; color:#ddd; border-radius:8px; cursor:pointer; }
+.btn2:hover { filter:brightness(1.1); }

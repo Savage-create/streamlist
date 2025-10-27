@@ -41,10 +41,24 @@ export default function SearchPage() {
       {data && (
         <ul className="grid">
           {data.results?.map(m => (
-            <li key={m.id} className="card">
-              <div style={{fontWeight:600}}>{m.title}</div>
-              <div className="subtle">{m.release_date}</div>
-              <Link to={`/movie/${m.id}`} style={{marginTop:8, display:"inline-block"}}>View details →</Link>
+            <li key={m.id} className="card card-h">
+              {m.poster_path ? (
+                <img
+                  className="poster"
+                  src={`https://image.tmdb.org/t/p/w185${m.poster_path}`}
+                  alt={m.title}
+                  loading="lazy"
+                  width="80"
+                  height="120"
+                />
+              ) : (
+                <div className="poster" />
+              )}
+              <div style={{flex:1}}>
+                <div style={{fontWeight:600}}>{m.title}</div>
+                <div className="subtle">{m.release_date || "—"}</div>
+                <Link to={`/movie/${m.id}`} style={{marginTop:8, display:"inline-block"}}>View details →</Link>
+              </div>
             </li>
           ))}
         </ul>
