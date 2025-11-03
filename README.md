@@ -3,7 +3,7 @@ HEAD
 # StreamList
 
 Student: Timothy Savage  
-Course: INT499 — Week 3
+Course: INT499 — Week 5
 ﻿# StreamList
 
 Minimal movie finder built with Vite + React Router. Searches TMDB, shows details, and persists recent searches and favorites in LocalStorage.
