@@ -5,6 +5,7 @@ const AuthCtx = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
+  // Demo login only (no real OAuth here)
   const loginDemo = () => setUser({ id: "demo", name: "Demo User" });
   const logout = () => setUser(null);
 

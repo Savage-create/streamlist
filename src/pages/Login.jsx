@@ -12,9 +12,9 @@ export default function Login() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: 100 }}>
+    <div style={{ textAlign: "center", marginTop: 100, color: "#fff" }}>
       <h1>Sign in to StreamList</h1>
-      <p style={{ opacity: 0.7 }}>Demo login only</p>
+      <p style={{ opacity: 0.8 }}>Demo login (no real OAuth)</p>
       <button
         onClick={handleDemoLogin}
         style={{

@@ -1,8 +1,9 @@
-﻿export default function NotFound() {
+﻿import React from "react";
+export default function NotFound() {
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>404 | Page Not Found</h1>
-      <p>The page you requested doesn’t exist.</p>
-    </main>
+    <div style={{ color:"#fff", padding: 24 }}>
+      <h1>Not Found</h1>
+      <p>The page you requested does not exist.</p>
+    </div>
   );
 }

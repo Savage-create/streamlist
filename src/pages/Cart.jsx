@@ -14,8 +14,16 @@ export default function Cart() {
       <ul style={{ listStyle: "none", padding: 0 }}>
         {items.map(it => (
           <li key={it.id} style={{ marginBottom: 12 }}>
-            <strong>{it.title}</strong> – ${it.price.toFixed(2)}<br />
-            <button onClick={() => remove(it.id)} style={{ background:"#e50914", color:"#fff", border:0, padding:"4px 8px", marginTop:6 }}>Remove</button>
+            <strong>{it.title || it.name}</strong> – ${it.price.toFixed(2)}<br />
+            {typeof it.qty === "number" && (
+              <span>Qty: {it.qty}</span>
+            )}
+            <div style={{ marginTop: 6 }}>
+              <button onClick={() => remove(it.id)}
+                style={{ background:"#e50914", color:"#fff", border:0, padding:"4px 8px" }}>
+                Remove
+              </button>
+            </div>
           </li>
         ))}
       </ul>

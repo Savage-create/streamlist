@@ -24,7 +24,11 @@ function TopNav() {
       <Link to="/search">Search</Link>
       <Link to="/subscriptions">Subscriptions</Link>
       <Link to="/cart">Cart</Link>
-      {user && <button onClick={logout} style={{ marginLeft:"auto" }}>Logout</button>}
+      {user && (
+        <button onClick={logout} style={{ marginLeft:"auto" }}>
+          Logout
+        </button>
+      )}
     </nav>
   );
 }
