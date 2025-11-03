@@ -1,58 +1,65 @@
-﻿import { createContext, useContext, useEffect, useMemo, useState } from "react";
+﻿// src/cart/CartContext.jsx
+import { createContext, useContext, useState, useMemo, useCallback } from "react";
 
-const Ctx = createContext(null);
-const LS_KEY = "cart.v1";
+const CartCtx = createContext(null);
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    } catch {
-      return [];
-    }
-  });
+  const [items, setItems] = useState([]); // { id, name, price, qty, type }
   const [warning, setWarning] = useState("");
 
-  useEffect(() => {
-    localStorage.setItem(LS_KEY, JSON.stringify(items));
-  }, [items]);
+  // Add item logic
+  const add = useCallback(
+    (product) => {
+      const hasSubscription = items.some((i) => i.type === "subscription");
 
-  function add(item) {
-    // Enforce: only one subscription item in cart
-    if (item.type === "subscription") {
-      const hasDifferentSub = items.some(
-        (i) => i.type === "subscription" && i.id !== item.id,
-      );
-      if (hasDifferentSub) {
-        setWarning("Only one subscription can be in the cart at a time.");
+      if (product.type === "subscription" && hasSubscription) {
+        setWarning("Only one subscription is allowed at a time.");
         return;
       }
-    }
-    setItems((xs) => {
-      const i = xs.findIndex((x) => x.id === item.id);
-      if (i >= 0) {
-        const next = xs.slice();
-        next[i] = { ...xs[i], qty: xs[i].qty + 1 };
-        return next;
-      }
-      return [...xs, { ...item, qty: 1 }];
-    });
-  }
-  function remove(id) {
-    setItems((xs) => xs.filter((x) => x.id !== id));
-  }
-  function setQty(id, qty) {
-    const q = Math.max(1, Number(qty) || 1);
-    setItems((xs) => xs.map((x) => (x.id === id ? { ...x, qty: q } : x)));
-  }
-  function clearWarning() {
-    setWarning("");
-  }
 
-  const count = useMemo(() => items.reduce((n, x) => n + x.qty, 0), [items]);
+      setItems((prev) => {
+        const existing = prev.find((i) => i.id === product.id);
+        if (existing) {
+          // Accessories can increase qty, subscription stays at 1
+          return prev.map((i) =>
+            i.id === product.id
+              ? { ...i, qty: i.type === "subscription" ? 1 : i.qty + 1 }
+              : i
+          );
+        }
+        // New item
+        return [...prev, { ...product, qty: 1 }];
+      });
+
+      setWarning(""); // clear previous warning if any
+    },
+    [items]
+  );
+
+  // Remove item
+  const remove = useCallback((id) => {
+    setItems((prev) => prev.filter((i) => i.id !== id));
+    setWarning("");
+  }, []);
+
+  // Set quantity
+  const setQty = useCallback((id, qty) => {
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id === id
+          ? { ...i, qty: i.type === "subscription" ? 1 : Math.max(1, +qty || 1) }
+          : i
+      )
+    );
+  }, []);
+
+  // Clear warnings
+  const clearWarning = useCallback(() => setWarning(""), []);
+
+  // Total calculation
   const total = useMemo(
-    () => items.reduce((n, x) => n + x.qty * x.price, 0),
-    [items],
+    () => items.reduce((sum, i) => sum + i.price * i.qty, 0),
+    [items]
   );
 
   const value = {
@@ -60,11 +67,18 @@ export function CartProvider({ children }) {
     add,
     remove,
     setQty,
-    count,
-    total,
     warning,
     clearWarning,
+    total,
   };
-  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+
+  return <CartCtx.Provider value={value}>{children}</CartCtx.Provider>;
 }
-export const useCart = () => useContext(Ctx);
+
+export function useCart() {
+  const context = useContext(CartCtx);
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
+}
