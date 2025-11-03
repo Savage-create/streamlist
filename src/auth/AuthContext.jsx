@@ -3,9 +3,8 @@
 const AuthCtx = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // start null every time
 
-  // Demo login only (no real OAuth here)
   const loginDemo = () => setUser({ id: "demo", name: "Demo User" });
   const logout = () => setUser(null);
 

@@ -2,6 +2,7 @@
 import { Routes, Route, Navigate, Link } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Movies from "./pages/Movies.jsx";
+import MoviePage from "./pages/MoviePage.jsx";
 import SearchPage from "./pages/SearchPage.jsx";
 import Subscriptions from "./pages/Subscriptions.jsx";
 import Cart from "./pages/Cart.jsx";
@@ -9,6 +10,7 @@ import Checkout from "./pages/Checkout.jsx";
 import Login from "./pages/Login.jsx";
 import NotFound from "./pages/NotFound.tsx";
 import { AuthProvider, useAuth } from "./auth/AuthContext.jsx";
+import { CartProvider } from "./cart/CartContext.jsx";
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
@@ -36,17 +38,22 @@ function TopNav() {
 export default function App() {
   return (
     <AuthProvider>
-      <TopNav />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
-        <Route path="/movies" element={<PrivateRoute><Movies /></PrivateRoute>} />
-        <Route path="/search" element={<PrivateRoute><SearchPage /></PrivateRoute>} />
-        <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
-        <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
-        <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <CartProvider>
+        <TopNav />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/movies" element={<PrivateRoute><Movies /></PrivateRoute>} />
+          <Route path="/search" element={<PrivateRoute><SearchPage /></PrivateRoute>} />
+          <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
+          <Route path="/movie/:id"   element={<PrivateRoute><MoviePage /></PrivateRoute>} />
+           <Route path="/movies/:id"  element={<PrivateRoute><MoviePage /></PrivateRoute>} />
+          <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+          <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path="*" element={<NotFound />} />
+
+        </Routes>
+      </CartProvider>
     </AuthProvider>
   );
 }

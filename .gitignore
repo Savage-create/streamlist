@@ -1,4 +1,26 @@
+﻿# Node & build artifacts
 node_modules/
-/.env
-
+dist/
+.vite/
 .env
+.env.*
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+.DS_Store
+
+# Playwright / test outputs
+playwright-report/
+test-results/
+blob-report/
+coverage/
+ms-playwright/
+
+# OS/Editor junk
+Thumbs.db
+*.swp
+*.swo
+*.orig
+
+# Zips and large local files
+*.zip
