@@ -1,94 +1,48 @@
-﻿import { Routes, Route, Navigate, Link } from "react-router-dom";
-import { useAuth } from "./auth/AuthContext.jsx";
+﻿import React from "react";
+import { Routes, Route, Navigate, Link } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Movies from "./pages/Movies.jsx";
-import MoviePage from "./pages/MoviePage.jsx";
+import SearchPage from "./pages/SearchPage.jsx";
 import Subscriptions from "./pages/Subscriptions.jsx";
 import Cart from "./pages/Cart.jsx";
 import Checkout from "./pages/Checkout.jsx";
-import About from "./pages/About.jsx";
 import Login from "./pages/Login.jsx";
 import NotFound from "./pages/NotFound.tsx";
+import { AuthProvider, useAuth } from "./auth/AuthContext.jsx";
 
 function PrivateRoute({ children }) {
-  const { user, loading } = useAuth();
-  if (loading) return <div style={{ padding: 24 }}>Loading…</div>;
-  return user ? children : <Navigate to="/login" replace />;
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+
+function TopNav() {
+  const { user, logout } = useAuth();
+  return (
+    <nav style={{ display:"flex", gap:12, padding:12 }}>
+      <Link to="/">StreamList</Link>
+      <Link to="/search">Search</Link>
+      <Link to="/subscriptions">Subscriptions</Link>
+      <Link to="/cart">Cart</Link>
+      {user && <button onClick={logout} style={{ marginLeft:"auto" }}>Logout</button>}
+    </nav>
+  );
 }
 
 export default function App() {
   return (
-    <div className="app">
-      <nav style={{ display: "flex", gap: 14, padding: "10px 14px" }}>
-        <Link to="/">StreamList</Link>
-        <Link to="/search">Search</Link>
-        <Link to="/subscriptions">Subscriptions</Link>
-        <Link to="/cart">Cart</Link>
-      </nav>
-
+    <AuthProvider>
+      <TopNav />
       <Routes>
-        {/* Public: only /login should be reachable when signed out */}
         <Route path="/login" element={<Login />} />
-
-        {/* Everything else requires auth */}
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/movies"
-          element={
-            <PrivateRoute>
-              <Movies />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/movie/:id"
-          element={
-            <PrivateRoute>
-              <MoviePage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/subscriptions"
-          element={
-            <PrivateRoute>
-              <Subscriptions />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <PrivateRoute>
-              <Cart />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <PrivateRoute>
-              <Checkout />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <PrivateRoute>
-              <About />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+        <Route path="/movies" element={<PrivateRoute><Movies /></PrivateRoute>} />
+        <Route path="/search" element={<PrivateRoute><SearchPage /></PrivateRoute>} />
+        <Route path="/subscriptions" element={<PrivateRoute><Subscriptions /></PrivateRoute>} />
+        <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+        <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+    </AuthProvider>
   );
 }
