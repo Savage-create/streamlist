@@ -1,13 +1,16 @@
 ﻿import { Link } from "react-router-dom";
 
-export default function Movies({ items = [] }) {
+export default function Row({ title, items = [] }) {
   if (!items.length) return null;
   return (
-    <div className="grid">
-      {items.map((m) => (
-        <div key={m.id} className="card">
+    <div className="row">
+      <h2>{title}</h2>
+      <div className="strip">
+        {items.map((m) => (
           <Link
+            key={m.id}
             to={`/movie/${m.id}`}
+            className="tile"
             aria-label={`Open details for ${m.title}`}
           >
             <img
@@ -20,9 +23,8 @@ export default function Movies({ items = [] }) {
               alt={m.title || "Movie poster"}
             />
           </Link>
-          <div className="title">{m.title}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

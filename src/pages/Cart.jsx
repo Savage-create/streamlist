@@ -1,47 +1,55 @@
-﻿import { useCart } from "../cart/CartContext";
+﻿// src/pages/Cart.jsx
+import { useCart } from "../cart/CartContext";
 
 export default function Cart() {
-  const { items, setQty, remove, total } = useCart();
+  const { items, total, setQty, remove } = useCart();
+
   return (
     <div>
       <h1 className="h1">Cart</h1>
+
       {items.length === 0 ? (
-        <p className="subtle">Cart is empty.</p>
+        <div className="subtle">Your cart is empty.</div>
       ) : (
-        <ul className="stack">
-          {items.map((it) => (
-            <li
-              key={it.id}
-              className="card"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr auto auto auto",
-                gap: 12,
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <div style={{ fontWeight: 600 }}>{it.name}</div>
-                <div className="subtle">{it.type}</div>
+        <ul className="cartList">
+          {items.map((i) => (
+            <li key={i.id} className="cartRow">
+              <div className="cartTitle">
+                <strong>{i.name}</strong>
+                <div className="subtle">{i.type}</div>
               </div>
-              <div className="subtle">${it.price.toFixed(2)}</div>
-              <div>
-                <input
-                  type="number"
-                  min="1"
-                  value={it.qty}
-                  onChange={(e) => setQty(it.id, e.target.value)}
-                  className="qty"
-                />
+
+              <div className="cartPrice">${i.price.toFixed(2)}</div>
+
+              <div className="cartQty">
+                {i.type === "subscription" ? (
+                  <input
+                    type="number"
+                    value={1}
+                    readOnly
+                    className="qty"
+                    title="Subscriptions are limited to 1"
+                  />
+                ) : (
+                  <input
+                    type="number"
+                    min={1}
+                    value={i.qty}
+                    onChange={(e) => setQty(i.id, e.target.value)}
+                    className="qty"
+                  />
+                )}
               </div>
-              <button className="btn2" onClick={() => remove(it.id)}>
+
+              <button className="btn danger" onClick={() => remove(i.id)}>
                 Remove
               </button>
             </li>
           ))}
         </ul>
       )}
-      <div style={{ marginTop: 18, fontWeight: 700 }}>
+
+      <div style={{ marginTop: 16, fontWeight: 700 }}>
         Total: ${total.toFixed(2)}
       </div>
     </div>
