@@ -14,3 +14,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </CartProvider>
   </React.StrictMode>
 );
+
+// Register service worker for PWA
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then(() => console.log("Service worker registered"))
+      .catch((err) => console.warn("SW registration failed:", err));
+  });
+}
