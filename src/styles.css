@@ -153,3 +153,12 @@ button.secondary {
 .back {
   color: var(--muted);
 }
+
+/* PWA + perf tweaks */
+img {
+  height: auto;
+  display: block;
+}
+img[loading="lazy"] {
+  filter: saturate(1.02);
+}

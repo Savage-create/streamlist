@@ -10,7 +10,9 @@ export default function App() {
   return (
     <>
       <nav className="nav">
-        <Link to="/" className="brand">StreamList</Link>
+        <Link to="/" className="brand">
+          StreamList
+        </Link>
         <Link to="/search">Search</Link>
         <Link to="/subscriptions">Subscriptions</Link>
         <Link to="/cart">Cart</Link>

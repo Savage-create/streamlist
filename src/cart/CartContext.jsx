@@ -1,5 +1,11 @@
 ﻿// src/cart/CartContext.jsx
-import { createContext, useContext, useState, useMemo, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 
 const CartCtx = createContext(null);
 
@@ -24,7 +30,7 @@ export function CartProvider({ children }) {
           return prev.map((i) =>
             i.id === product.id
               ? { ...i, qty: i.type === "subscription" ? 1 : i.qty + 1 }
-              : i
+              : i,
           );
         }
         // New item
@@ -33,7 +39,7 @@ export function CartProvider({ children }) {
 
       setWarning(""); // clear previous warning if any
     },
-    [items]
+    [items],
   );
 
   // Remove item
@@ -47,9 +53,12 @@ export function CartProvider({ children }) {
     setItems((prev) =>
       prev.map((i) =>
         i.id === id
-          ? { ...i, qty: i.type === "subscription" ? 1 : Math.max(1, +qty || 1) }
-          : i
-      )
+          ? {
+              ...i,
+              qty: i.type === "subscription" ? 1 : Math.max(1, +qty || 1),
+            }
+          : i,
+      ),
     );
   }, []);
 
@@ -59,7 +68,7 @@ export function CartProvider({ children }) {
   // Total calculation
   const total = useMemo(
     () => items.reduce((sum, i) => sum + i.price * i.qty, 0),
-    [items]
+    [items],
   );
 
   const value = {

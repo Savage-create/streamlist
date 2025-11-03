@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <App />
       </BrowserRouter>
     </CartProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // Register service worker for PWA
@@ -22,5 +22,20 @@ if ("serviceWorker" in navigator) {
       .register("/service-worker.js")
       .then(() => console.log("Service worker registered"))
       .catch((err) => console.warn("SW registration failed:", err));
+  });
+}
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.getRegistrations().then((existing) => {
+      const hasSW = existing.some(
+        (r) => r.active && r.active.scriptURL.includes("service-worker.js"),
+      );
+      if (!hasSW) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .catch(console.error);
+      }
+    });
   });
 }

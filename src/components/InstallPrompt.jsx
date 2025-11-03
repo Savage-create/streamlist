@@ -17,8 +17,8 @@ export default function InstallPrompt() {
   const install = async () => {
     evt.prompt();
     const { outcome } = await evt.userChoice;
-    console.log("PWA install:", outcome);
     setEvt(null);
+    console.log("PWA install:", outcome);
   };
 
   return (
