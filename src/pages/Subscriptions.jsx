@@ -44,12 +44,16 @@ export default function Subscriptions() {
             <div style={{ fontWeight: 600 }}>{p.name}</div>
             <div className="subtle">{p.desc}</div>
             <div style={{ margin: "8px 0" }}>${p.price.toFixed(2)}</div>
-            <button className="btn" onClick={() => add(p)}>Add</button>
+            <button className="btn" onClick={() => add(p)}>
+              Add
+            </button>
           </li>
         ))}
       </ul>
 
-      <h2 className="h1" style={{ marginTop: 24 }}>Accessories</h2>
+      <h2 className="h1" style={{ marginTop: 24 }}>
+        Accessories
+      </h2>
       <ul className="grid">
         {accs.map((p) => (
           <li key={p.id} className="card">
@@ -61,7 +65,9 @@ export default function Subscriptions() {
             <div style={{ fontWeight: 600 }}>{p.name}</div>
             <div className="subtle">{p.desc}</div>
             <div style={{ margin: "8px 0" }}>${p.price.toFixed(2)}</div>
-            <button className="btn" onClick={() => add(p)}>Add</button>
+            <button className="btn" onClick={() => add(p)}>
+              Add
+            </button>
           </li>
         ))}
       </ul>

@@ -1,20 +1,42 @@
-﻿const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||"");}catch{return d;}};
-const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+﻿// src/services/storage.js
 
-export const storage={
-  recentSearches:()=>get("recentSearches",[]),
-  addRecentSearch:(q)=>{
-    const xs=get("recentSearches",[]);
-    const n=[q,...xs.filter(s=>s.toLowerCase()!==q.toLowerCase())].slice(0,8);
-    set("recentSearches",n);
+// Low-level helpers
+export function safeGet(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function safeSet(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
+// Convenience helpers for arrays
+export function getArray(key) {
+  return safeGet(key, []);
+}
+
+export function pushToArray(key, item, limit = 10) {
+  const prev = getArray(key);
+  if (item == null || item === "") return prev;
+  const next = [item, ...prev.filter((x) => x !== item)].slice(0, limit);
+  safeSet(key, next);
+  return next;
+}
+
+// Back-compat API your pages can call
+export const storage = {
+  get: safeGet,
+  set: safeSet,
+  recentSearches() {
+    return getArray("recentSearches");
   },
-  favorites:()=>get("favorites",[]),
-  isFavorite:(id)=>get("favorites",[]).includes(id),
-  toggleFavorite:(id)=>{
-    const s=new Set(get("favorites",[]));
-    s.has(id)?s.delete(id):s.add(id);
-    set("favorites",[...s]);
+  addRecentSearch(term) {
+    return pushToArray("recentSearches", term, 10);
   },
-  setLastView:(route)=>set("lastView",{route}),
-  lastView:()=>get("lastView",null)
 };

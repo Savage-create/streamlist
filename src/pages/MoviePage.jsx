@@ -10,7 +10,10 @@ export default function MoviePage() {
 
   useEffect(() => {
     (async () => {
-      const [m, p] = await Promise.all([tmdb.movieDetails(id), tmdb.movieWatchProviders(id)]);
+      const [m, p] = await Promise.all([
+        tmdb.movieDetails(id),
+        tmdb.movieWatchProviders(id),
+      ]);
       setMovie(m);
       setProviders(p?.results?.US || null);
     })();
@@ -23,21 +26,46 @@ export default function MoviePage() {
     <div>
       <Link to="/search">← Back</Link>
 
-      <div style={{display:"grid", gridTemplateColumns:"160px 1fr", gap:16, alignItems:"start", marginTop:12}}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "160px 1fr",
+          gap: 16,
+          alignItems: "start",
+          marginTop: 12,
+        }}
+      >
         {movie.poster_path ? (
           <img
             src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`}
             alt={movie.title}
             width="160"
             height="240"
-            style={{objectFit:"cover", borderRadius:12}}
+            style={{ objectFit: "cover", borderRadius: 12 }}
           />
-        ) : <div style={{width:160, height:240, background:"#222", borderRadius:12}}/>}
+        ) : (
+          <div
+            style={{
+              width: 160,
+              height: 240,
+              background: "#222",
+              borderRadius: 12,
+            }}
+          />
+        )}
 
         <div>
-          <h1 className="h1" style={{marginTop:0}}>{movie.title}</h1>
-          <p className="subtle" style={{marginTop:6}}>{movie.overview}</p>
-          <button className="btn" style={{marginTop:10}} onClick={()=>storage.toggleFavorite(Number(id))}>
+          <h1 className="h1" style={{ marginTop: 0 }}>
+            {movie.title}
+          </h1>
+          <p className="subtle" style={{ marginTop: 6 }}>
+            {movie.overview}
+          </p>
+          <button
+            className="btn"
+            style={{ marginTop: 10 }}
+            onClick={() => storage.toggleFavorite(Number(id))}
+          >
             {fav ? "Favorited ✓" : "Add to Favorites"}
           </button>
         </div>
@@ -47,7 +75,7 @@ export default function MoviePage() {
         <h2>Where to watch (US)</h2>
         {providers?.flatrate?.length ? (
           <div className="providers">
-            {providers.flatrate.map(x => (
+            {providers.flatrate.map((x) => (
               <span key={x.provider_id} className="provider">
                 {x.logo_path && (
                   <img
@@ -62,7 +90,9 @@ export default function MoviePage() {
               </span>
             ))}
           </div>
-        ) : <p className="subtle">No provider data.</p>}
+        ) : (
+          <p className="subtle">No provider data.</p>
+        )}
       </div>
     </div>
   );
